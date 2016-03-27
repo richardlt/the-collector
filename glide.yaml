@@ -1,0 +1,9 @@
+package: github.com/richardlt/the-collector
+license: GNUv3
+import:
+- package: github.com/codegangsta/cli
+- package: gopkg.in/mgo.v2
+- package: github.com/labstack/echo
+  subpackages:
+  - '...'
+- package: github.com/mrvdot/golang-utils
