@@ -1,5 +1,5 @@
 package: github.com/richardlt/the-collector
-license: GNUv3
+license: GPL-3.0
 import:
 - package: github.com/codegangsta/cli
 - package: gopkg.in/mgo.v2
@@ -7,3 +7,6 @@ import:
   subpackages:
   - '...'
 - package: github.com/mrvdot/golang-utils
+- package: golang.org/x/text
+  subpackages:
+  - unicode/norm

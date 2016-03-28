@@ -1,6 +1,9 @@
 package server
 
 import (
+	"html/template"
+	"net/http"
+
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
 	"github.com/labstack/echo/middleware"
@@ -10,8 +13,22 @@ import (
 	"gopkg.in/mgo.v2"
 )
 
+func handleRoot(mode string) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		data := make(map[string]interface{})
+		if mode == "dev" {
+			data["Title"] = "The Collector - DEV"
+			data["Bundle"] = "http://localhost:8081/js/bundle.js"
+			return c.Render(http.StatusOK, "index", data)
+		}
+		data["Title"] = "The Collector"
+		data["Bundle"] = "/js/bundle.js"
+		return c.Render(http.StatusOK, "index", data)
+	}
+}
+
 // Start : start server
-func Start(databaseURI string, databaseName string) {
+func Start(databaseURI string, databaseName string, mode string) {
 
 	log.Info("[server][Start] Trying connect to database at ", databaseURI)
 	s, err := mgo.Dial(databaseURI)
@@ -28,6 +45,11 @@ func Start(databaseURI string, databaseName string) {
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+
+	t := &Template{Templates: template.Must(template.ParseFiles("./client/dist/templates/index.html"))}
+	e.SetRenderer(t)
+	e.Any("/*", handleRoot(mode))
+	e.Static("/js", "./client/dist/js")
 
 	api := e.Group("/api")
 

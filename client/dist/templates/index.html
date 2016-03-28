@@ -1,0 +1,14 @@
+{{define "index"}}
+<html>
+    <head>
+        <title>
+            {{.Title}}
+        </title>
+    </head>
+    <body>
+        <script src="/js/bundle-dependencies.js"></script>
+        <div id="root"></div>
+        <script src="{{.Bundle}}"></script>
+    </doby>
+</html>
+{{end}}

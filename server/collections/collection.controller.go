@@ -2,6 +2,10 @@ package collections
 
 import (
 	"net/http"
+	"unicode"
+
+	"golang.org/x/text/transform"
+	"golang.org/x/text/unicode/norm"
 
 	"github.com/labstack/echo"
 	"github.com/mrvdot/golang-utils"
@@ -36,6 +40,10 @@ func HandleGetAll() echo.HandlerFunc {
 	}
 }
 
+func isMn(r rune) bool {
+	return unicode.Is(unicode.Mn, r) // Mn: nonspacing marks
+}
+
 // HandlePost: handler for post
 func HandlePost() echo.HandlerFunc {
 	return func(c echo.Context) error {
@@ -44,7 +52,9 @@ func HandlePost() echo.HandlerFunc {
 		if data.Name == "" {
 			return c.JSON(http.StatusNotAcceptable, nil)
 		}
-		data.Slug = utils.GenerateSlug(data.Name)
+		t := transform.Chain(norm.NFD, transform.RemoveFunc(isMn), norm.NFC)
+		name, _, _ := transform.String(t, data.Name)
+		data.Slug = utils.GenerateSlug(name)
 		exist, err := ExistSlug(data.Slug)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, data)

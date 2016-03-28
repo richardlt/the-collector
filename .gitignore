@@ -1,0 +1,7 @@
+the-collector
+node_modules
+bower_components
+client/dist/js
+the-collector-package
+the-collector.zip
+.DS_Store

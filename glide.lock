@@ -1,14 +1,18 @@
-hash: b36f65c2ff7ef46a5155c3908de656f43372b325895cd269ab47baa3bf54e497
-updated: 2016-03-27T20:36:18.776838592+02:00
+hash: 693f093e202e518bd89b6e6c69a25f92266f48e5f718258c28bb4c1a2ed6f6dc
+updated: 2016-03-28T02:37:34.706415847+02:00
 imports:
 - name: github.com/codegangsta/cli
   version: bc465becccd1d527002fda095fc3c19d9c115029
 - name: github.com/labstack/echo
-  version: 16c6f478b1a1e585bc88ada99aa423544279b047
+  version: a2d757eddc4d3bf17919d8e4b0a9b60743d38ecc
   subpackages:
   - '...'
 - name: github.com/mrvdot/golang-utils
   version: 84173ecd73fd871b1d807d48c8042f1429a3097f
+- name: golang.org/x/text
+  version: 1b466db55e0ba5d56ef5315c728216b42f796491
+  subpackages:
+  - unicode/norm
 - name: gopkg.in/mgo.v2
   version: b6e2fa371e64216a45e61072a96d4e3859f169da
 devImports: []

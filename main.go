@@ -13,6 +13,7 @@ func main() {
 
 	var databaseURI string
 	var databaseName string
+	var mode string
 
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
@@ -25,6 +26,11 @@ func main() {
 			Value:       "the-collector",
 			Destination: &databaseName,
 		},
+		cli.StringFlag{
+			Name:        "mode, m",
+			Value:       "prod",
+			Destination: &mode,
+		},
 	}
 
 	app.Commands = []cli.Command{
@@ -33,7 +39,7 @@ func main() {
 			Aliases: []string{"s"},
 			Usage:   "start the app",
 			Action: func(c *cli.Context) {
-				server.Start(databaseURI, databaseName)
+				server.Start(databaseURI, databaseName, mode)
 			},
 		},
 	}

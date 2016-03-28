@@ -5,6 +5,7 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/mrvdot/golang-utils"
+	"gopkg.in/mgo.v2/bson"
 )
 
 // HandleGet : handler for get
@@ -24,7 +25,7 @@ func HandleGet() echo.HandlerFunc {
 // HandleGetAll : handler for get all
 func HandleGetAll() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		items, err := GetAll()
+		items, err := GetAllInCollection(bson.ObjectIdHex(c.Request().Header().Get("collectionID")))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, nil)
 		}
@@ -53,6 +54,7 @@ func HandlePost() echo.HandlerFunc {
 			return c.JSON(http.StatusNotAcceptable, nil)
 		}
 		item := data.ToItem()
+		item.CollectionID = bson.ObjectIdHex(c.Request().Header().Get("collectionID"))
 		err = item.Create()
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, data)

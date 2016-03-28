@@ -24,19 +24,20 @@ func GetBySlug(slug string) (*Item, error) {
 	return i, err
 }
 
-// GetAll : get all items from database
-func GetAll() ([]Item, error) {
+// GetAllInCollection : get all items in specified collection from database
+func GetAllInCollection(collectionID bson.ObjectId) ([]Item, error) {
 	i := make([]Item, 0)
-	err := DatabaseCollection.Find(nil).All(&i)
+	err := DatabaseCollection.Find(bson.M{"_collection_id": collectionID}).All(&i)
 	return i, err
 }
 
 // Item : item struct
 type Item struct {
-	ID    bson.ObjectId `bson:"_id"`
-	Name  string        `bson:"name"`
-	Slug  string        `bson:"slug"`
-	Image []byte        `bson:"image"`
+	ID           bson.ObjectId `bson:"_id"`
+	CollectionID bson.ObjectId `bson:"_collection_id"`
+	Name         string        `bson:"name"`
+	Slug         string        `bson:"slug"`
+	Image        []byte        `bson:"image"`
 }
 
 // Restify : return rest item
@@ -57,7 +58,7 @@ func (i *Item) Create() error {
 // ItemRest : item rest struct
 type ItemRest struct {
 	Name string `json:"name"`
-	Slug string `json:"name"`
+	Slug string `json:"slug"`
 }
 
 // ToItem : return item

@@ -56,7 +56,7 @@ func (c *Collection) Create() error {
 // CollectionRest : collection rest struct
 type CollectionRest struct {
 	Name string `json:"name"`
-	Slug string `json:"name"`
+	Slug string `json:"slug"`
 }
 
 // ToCollection : return collection
