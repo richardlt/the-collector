@@ -1,6 +1,24 @@
 language: go
 
 go:
-  - 1.5
   - 1.6
-  - tip
+
+sudo: required
+
+before_install:
+    - sudo apt-get install -y nodejs
+    - curl -L https://github.com/Masterminds/glide/releases/download/0.10.1/glide-0.10.1-linux-amd64.zip -o glide.zip
+    - unzip glide.zip && mv ./linux-amd64/glide ./glide && rm -fr ./linux-amd64 && rm ./glide.zip
+
+install:
+    - npm install
+    - bower install
+    - ./glide install
+
+script:
+    - gulp bundle
+    - go build
+    - mkdir -p ./the-collector-package/client/dist
+    - cp ./the-collector ./the-collector-package
+    - cp -r ./client/dist/ ./the-collector-package/client/dist
+    - cd the-collector-package && zip -ro ../the-collector.zip *
