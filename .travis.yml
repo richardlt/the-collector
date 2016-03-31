@@ -15,7 +15,7 @@ install:
     - bower install
     - ./glide install
 
-script: go test ./server/...    
+script: go test ./server/...
 
 before_deploy:
     - gulp bundle
@@ -23,7 +23,7 @@ before_deploy:
     - mkdir -p ./the-collector-package/client/dist
     - cp ./the-collector ./the-collector-package
     - cp -r ./client/dist/ ./the-collector-package/client/dist
-    - cd the-collector-package && zip -ro ../the-collector.zip *
+    - cd the-collector-package && zip -ro ../the-collector.zip * && cd ..
 
 deploy:
     provider: releases
