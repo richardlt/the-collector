@@ -1,23 +1,34 @@
 language: go
 
 go:
-  - 1.6
-
+    - 1.6
 sudo: required
 
 before_install:
-    - curl -L https://github.com/Masterminds/glide/releases/download/0.10.1/glide-0.10.1-linux-amd64.zip -o glide.zip
-    - unzip glide.zip && mv ./linux-amd64/glide ./glide && rm -fr ./linux-amd64 && rm ./glide.zip
+    - curl -L https://github.com/Masterminds/glide/releases/download/0.10.1/glide-0.10.1-linux-amd64.zip
+      -o glide.zip
+    - unzip glide.zip && mv ./linux-amd64/glide ./glide && rm -fr ./linux-amd64 && rm
+      ./glide.zip
 
 install:
     - npm install
     - bower install
     - ./glide install
 
-script:
+before_deploy:
     - gulp bundle
     - go build
     - mkdir -p ./the-collector-package/client/dist
     - cp ./the-collector ./the-collector-package
     - cp -r ./client/dist/ ./the-collector-package/client/dist
     - cd the-collector-package && zip -ro ../the-collector.zip *
+
+deploy:
+    provider: releases
+    api_key:
+        secure: cBS86KcZkazpFB42q+lt6ipnAKCkWtZRuRdS7nEOaCCmsxk/OZBSdnOgYu4B6NfWukn7dwjd2YAejqmuwKa5iwJKjsTxXIw1KvfoWpFTJNFmFUMyqDITr5YC6yuOEywM0OrluisREEjiW+OzLdhRXLQDO/fyPNafjdpP1ep6aKA8FtXqHuYCoYGjVTDsLUZWcrr97ZpPAzJBmiGdQ7wKYcsQRsbKQXv0gnUo6zyCiIaiFyOynK1iBqAEMCTkB8++XOtR9P7YL1RJ87L7uLtimkRvU14IU8MetKlGSdo9OjTIC9XlSglNY02zAyRL7kwpDM6T3kkUYOhs9REnfJcIGbsm47DVE++oqiRcz3t3DQSv7fZh7GYRpwvUU8m35x1DnxnbP1xRbEvzUkC7luGSI1qqyvw96RWM1SUcBlA4aBdNIxFEsC390VtLm0606kB2J15JlSnRuUes81IVmtwtQrvFIurZVWfORD1D4orJZsrWrv4de0AjT80+4Z7PsLSDvGZipgPyDwO9mvkjX3P2Wwhf+a/zGdhhsvHfAe/ATvI5PJH2be+4/IWyPf/2LWLEV9SF9li1kKmu06n+1NSi5rNgOBukEUHi/X3esYxeGFe2y3j9oreDTt3TibUp//R7Rzjj5+0PXPayGoh9TIRQRKfWd3CfoT+X+V3w2WDSRBU=
+    file: the-collector.zip
+    skip_cleanup: true
+    on:
+        tags : true
+        repo: richardlt/the-collector
