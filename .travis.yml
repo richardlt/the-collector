@@ -24,9 +24,9 @@ script: go test ./server/...
 before_deploy:
     - gulp bundle
     - CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o the-collector .
-    - mkdir -p ./the-collector-package/client/dist
+    - mkdir -p ./the-collector-package/client
     - cp ./the-collector ./the-collector-package
-    - cp -r ./client/dist/ ./the-collector-package/client/dist
+    - cp -vr ./client/dist/ ./the-collector-package/client
     - cd the-collector-package && zip -ro ../the-collector.zip * && cd ..
     - docker build -t richardleterrier/the-collector:latest .
     - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
