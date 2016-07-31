@@ -15,7 +15,7 @@ class Collections extends React.Component {
         this.unSubscribe = Store.subscribe(() => {
             this.forceUpdate();
         });
-        ItemApi.getAllInCollection(this.props.params.collectionSlug);
+        ItemApi.getAllInCollection(this.props.params.collectionUUID);
     }
 
     componentWillUnmount() {
@@ -28,7 +28,7 @@ class Collections extends React.Component {
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     if(this.refs.name.value) {
-                        ItemApi.addToCollection({ name: this.refs.name.value }, this.props.params.collectionSlug);
+                        ItemApi.addToCollection(this.props.params.collectionUUID, { name: this.refs.name.value });
                         this.refs.name.value = '';
                     }
                 }} >

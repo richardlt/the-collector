@@ -9,6 +9,7 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/labstack/gommon/log"
 	"github.com/richardlt/the-collector/server/collections"
+	"github.com/richardlt/the-collector/server/files"
 	"github.com/richardlt/the-collector/server/items"
 	"gopkg.in/mgo.v2"
 )
@@ -39,8 +40,8 @@ func Start(databaseURI string, databaseName string, mode string) {
 	log.Info("[server][Start] Successfully connected to database")
 
 	db := s.DB(databaseName)
-	collections.DatabaseCollection = db.C("collections")
-	items.DatabaseCollection = db.C("items")
+	collections.Collection = db.C("collections")
+	items.Collection = db.C("items")
 
 	e := echo.New()
 	e.Use(middleware.Logger())
@@ -52,13 +53,25 @@ func Start(databaseURI string, databaseName string, mode string) {
 	e.Static("/js", "./client/dist/js")
 
 	api := e.Group("/api")
-
-	co := api.Group("/collections")
-	collections.DeclareRoutes(co)
-
-	it := api.Group("/items")
-	it.Use(collections.Middleware())
-	items.DeclareRoutes(it)
+	{ // routes for /api
+		cog := api.Group("/collections")
+		{ // routes for /api/collections
+			cog.Get("", collections.HandleGetAll)
+			cog.Post("", collections.HandlePost)
+			coug := cog.Group("/:collectionUUID", collections.Middleware())
+			{
+				couitg := coug.Group("/items")
+				{ // routes for /api/items
+					couitg.Get("", items.HandleGetAllForCollection)
+					couitg.Post("", items.HandlePost)
+					couitug := couitg.Group("/:itemUUID", items.Middleware())
+					{ // routes for /api/items/:itemUUID
+						couitug.Post("/files", files.HandlePost)
+					}
+				}
+			}
+		}
+	}
 
 	e.Run(standard.New(":8080"))
 }

@@ -10,7 +10,7 @@ ReactDOM.render(
     <Router history={browserHistory}>
         <Route path="/">
             <IndexRoute component={Collections} />
-            <Route path="/:collectionSlug" component={Collection} />
+            <Route path="/:collectionUUID" component={Collection} />
         </Route>
     </Router>,
     document.getElementById('root')

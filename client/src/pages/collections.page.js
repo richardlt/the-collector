@@ -35,7 +35,7 @@ class Collections extends React.Component {
                         Store.getState().collections.map((collection, i) => {
                             return (
                                 <li key={i}>
-                                    <Link to={`/${collection.slug}`}>{collection.name}</Link>
+                                    <Link to={`/${collection.uuid}`}>{collection.name}</Link>
                                 </li>
                             );
                         })

@@ -1,13 +1,10 @@
 import Store from './../store.js'
 import ItemAction from './../actions/item.action.js'
 
-const addToCollection = (item, collectionSlug) => {
+const addToCollection = (collectionUUID, item) => {
     return $.ajax({
         type: "POST",
-        url: '/api/items',
-        headers: {
-            'X-COLLECTION-SLUG': collectionSlug
-        },
+        url: '/api/collections/' + collectionUUID + '/items',
         contentType: "application/json",
         data: JSON.stringify(item)
     }).done((item) => {
@@ -15,13 +12,10 @@ const addToCollection = (item, collectionSlug) => {
     });
 }
 
-const getAllInCollection = (collectionSlug) => {
+const getAllInCollection = (collectionUUID) => {
     return $.ajax({
         type: "GET",
-        url: '/api/items',
-        headers: {
-            'X-COLLECTION-SLUG': collectionSlug
-        }
+        url: '/api/collections/' + collectionUUID + '/items'
     }).done((items) => {
         Store.dispatch(ItemAction.getAll(items));
     });
