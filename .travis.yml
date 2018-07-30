@@ -11,8 +11,8 @@ install: make install
 script: make test
 
 before_deploy:
-    - make build dockerize
-    - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+    - make build package dockerize
+    - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
     - docker push richardleterrier/the-collector:latest
 
 deploy:
