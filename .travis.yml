@@ -1,26 +1,19 @@
 language: go
-
-go: "1.10"
-
+go: '1.10'
 sudo: required
-
 services: docker
-
 install: make install
-
 script: make test
-
 before_deploy:
-    - make build package dockerize
-    - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-    - docker push richardleterrier/the-collector:latest
-
+- make build package dockerize
+- docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+- docker push richardleterrier/the-collector:latest
 deploy:
-    provider: releases
-    api_key:
-        secure: cBS86KcZkazpFB42q+lt6ipnAKCkWtZRuRdS7nEOaCCmsxk/OZBSdnOgYu4B6NfWukn7dwjd2YAejqmuwKa5iwJKjsTxXIw1KvfoWpFTJNFmFUMyqDITr5YC6yuOEywM0OrluisREEjiW+OzLdhRXLQDO/fyPNafjdpP1ep6aKA8FtXqHuYCoYGjVTDsLUZWcrr97ZpPAzJBmiGdQ7wKYcsQRsbKQXv0gnUo6zyCiIaiFyOynK1iBqAEMCTkB8++XOtR9P7YL1RJ87L7uLtimkRvU14IU8MetKlGSdo9OjTIC9XlSglNY02zAyRL7kwpDM6T3kkUYOhs9REnfJcIGbsm47DVE++oqiRcz3t3DQSv7fZh7GYRpwvUU8m35x1DnxnbP1xRbEvzUkC7luGSI1qqyvw96RWM1SUcBlA4aBdNIxFEsC390VtLm0606kB2J15JlSnRuUes81IVmtwtQrvFIurZVWfORD1D4orJZsrWrv4de0AjT80+4Z7PsLSDvGZipgPyDwO9mvkjX3P2Wwhf+a/zGdhhsvHfAe/ATvI5PJH2be+4/IWyPf/2LWLEV9SF9li1kKmu06n+1NSi5rNgOBukEUHi/X3esYxeGFe2y3j9oreDTt3TibUp//R7Rzjj5+0PXPayGoh9TIRQRKfWd3CfoT+X+V3w2WDSRBU=
-    file: the-collector.zip
-    skip_cleanup: true
-    on:
-        tags: true
-        repo: richardlt/the-collector
+  provider: releases
+  api_key:
+    secure: lPnIBxfljcwuFtdJQ5Lhateo0oOjlwyABAx5IIhk3wKgUOdnSKIMTSXkGORI4yaRt4AiEcsPVxMCeumzKY3xp3xNYN/e28Dz9QYw0GK+sGOngDDn2UrQB9bHdhJ8tEvAe6YrJjkP/8q5aoaYcLiEctcqsFuqV/3J2GqiijCy/Fo85gBQXeF8Cjzh2gAO98nVCQwyZQENo2/ncMDNMCpPOQNrGPstz1saGd9PnWosLpExdddLzm6TCvP6VHC5xsGplYFehluijg3HbHQtLvOksSJft+qpXuSBHguwaQRGvxW1jsgRjchQyDuFh/V0qFj9pTEIrk7TNSiOf0g+3mnwg+1C+Ju+SYePMLjSP3HFdCqGZuHO6DKo+vsrG2Y3WxMiWXAmF5fzSg6cOJmXIZo6EWSGHXgLRYtpe19dgxEiF+CxTh4pfg/XIRDHJvR6qfsL3dDEx/bv4ZGIpi4fRSxbhwfi4EjzAITQ0GavKF6oiT2NhNgFrUVNPY6MrNzALLit6JHRDLZtoFRUXuBCJpv3e/9jaBbXTpVkaD5jad5rwKszAY1BS3+oN42Rnp/dx+/ulquqhqQhqB1Tsqv1gpU/e9Dhx3MMDrtkMpYkJZWm/PwKdxfr1y9xok6wlTWlZXO/iAVzxP5Eb5zXzwitVgflL3GmKklMU0KecxpPEz27ouk=
+  file: the-collector.zip
+  skip_cleanup: true
+  on:
+    tags: true
+    repo: richardlt/the-collector
