@@ -1,11 +1,9 @@
-FROM alpine:3.3
+FROM alpine:3.8
 
-MAINTAINER Richard LE TERRIER <richard.le.terrier@gmail.com>
+COPY ./the-collector-package /opt/the-collector
 
-COPY ./the-collector.zip /opt/the-collector.zip
+WORKDIR /opt/the-collector
 
-RUN unzip /opt/the-collector.zip -d /opt && chmod +x /opt/the-collector
+ENTRYPOINT ["/opt/the-collector/the-collector"]
 
 EXPOSE 8080
-
-CMD ["/opt/the-collector", "start"]
