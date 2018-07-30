@@ -3,22 +3,21 @@ reset:
 
 clean:
 	rm -f the-collector
-	rm -rf client/dist/js
+	rm -rf client/dist
 	rm -rf the-collector-package
 	rm -f the-collector.zip
 
 install:
 	npm install
-	bower install
 
 build:
 	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o the-collector .
 	npm run build
 
 package:
-	mkdir -p ./the-collector-package/client
+	mkdir -p ./the-collector-package/client/dist
 	cp ./the-collector ./the-collector-package
-	cp -vr ./client/dist/ ./the-collector-package/client
+	cp -vr ./client/dist/ ./the-collector-package/client/dist
 	cd the-collector-package && zip -ro ../the-collector.zip * && cd ..
 
 dockerize:

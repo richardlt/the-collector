@@ -16,7 +16,8 @@ let config = {
     },
     output: {
         path: BUILD_DIR,
-        filename: PRODUCTION ? '[name].[chunkhash].js' : '[name].js'
+        filename: PRODUCTION ? 'static/[name].[chunkhash].js' : 'static/[name].js',
+        publicPath: '/'
     },
     module: {
         loaders: [{

@@ -30,7 +30,9 @@ func Start(databaseURI string, databaseName string) {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	e.Static("/js", "./client/dist/js")
+	e.File("*", "./client/dist/index.html")
+
+	e.Static("/static", "./client/dist/static")
 
 	api := e.Group("/api")
 	{ // routes for /api
