@@ -1,8 +1,9 @@
 import Store from './../store.js'
 import ItemAction from './../actions/item.action.js'
+import jquery from 'jquery'
 
 const addToCollection = (collectionUUID, item) => {
-    return $.ajax({
+    return jquery.ajax({
         type: "POST",
         url: '/api/collections/' + collectionUUID + '/items',
         contentType: "application/json",
@@ -13,7 +14,7 @@ const addToCollection = (collectionUUID, item) => {
 }
 
 const getAllInCollection = (collectionUUID) => {
-    return $.ajax({
+    return jquery.ajax({
         type: "GET",
         url: '/api/collections/' + collectionUUID + '/items'
     }).done((items) => {

@@ -1,6 +1,5 @@
 reset:
 	rm -rf node_modules
-	rm -rf bower_components
 
 clean:
 	rm -f the-collector
@@ -14,7 +13,7 @@ install:
 
 build:
 	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o the-collector .
-	gulp bundle
+	npm run build
 
 package:
 	mkdir -p ./the-collector-package/client
