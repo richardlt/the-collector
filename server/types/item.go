@@ -1,12 +1,13 @@
 package types
 
-import "gopkg.in/mgo.v2/bson"
+import (
+	"github.com/mongodb/mongo-go-driver/bson/objectid"
+	"github.com/richardlt/the-collector/server/database"
+)
 
-// Item : item struct
+// Item .
 type Item struct {
-	Entity       `bson:",inline"`
-	CollectionID bson.ObjectId `bson:"_collection_id" json:"-" valid:"-"`
-	Name         string        `bson:"name" json:"name" valid:"string,len(0|100)"`
-	// generated
-	Picture *File `bson:"picture,omitempty" json:"picture,omitempty" valid:"-"`
+	database.BasicEntity `bson:",inline"`
+	CollectionID         objectid.ObjectID `bson:"_collection_id" json:"-"`
+	Picture              string            `bson:"-" json:"picture"`
 }

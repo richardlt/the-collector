@@ -1,34 +1,63 @@
 package server
 
 import (
+	"context"
+	"fmt"
+
 	"github.com/labstack/echo"
-	"github.com/labstack/echo/engine/standard"
 	"github.com/labstack/echo/middleware"
-	"github.com/labstack/gommon/log"
+	"github.com/mongodb/mongo-go-driver/mongo"
+	errorsP "github.com/pkg/errors"
+	"github.com/richardlt/the-collector/server/api"
+	"github.com/richardlt/the-collector/server/api/errors"
 	"github.com/richardlt/the-collector/server/collections"
+	"github.com/richardlt/the-collector/server/facebook"
 	"github.com/richardlt/the-collector/server/files"
 	"github.com/richardlt/the-collector/server/items"
-	"gopkg.in/mgo.v2"
+	"github.com/richardlt/the-collector/server/users"
 )
 
-// Start : start server
-func Start(databaseURI string, databaseName string) {
-
-	log.Info("[server][Start] Trying connect to database at ", databaseURI)
-	s, err := mgo.Dial(databaseURI)
+// Start .
+func Start(
+	appURI, jwtSecret string, debug bool,
+	databaseURI, databaseName string,
+	facebookAppID, facebookSecret string,
+	minioURI, minioAccessKey, minioSecretKey, minioBucket string, minioSSL bool,
+) error {
+	client, err := mongo.NewClient(fmt.Sprintf("mongodb://%s", databaseURI))
 	if err != nil {
-		panic(err)
+		return errorsP.WithStack(err)
 	}
-	defer s.Close()
-	log.Info("[server][Start] Successfully connected to database")
+	if err := client.Connect(context.Background()); err != nil {
+		return errorsP.WithStack(err)
+	}
 
-	db := s.DB(databaseName)
-	collections.Collection = db.C("collections")
-	items.Collection = db.C("items")
+	db := client.Database(databaseName)
+	collections.InitDatabase(context.Background(), db)
+	items.InitDatabase(context.Background(), db)
+	files.InitDatabase(context.Background(), db)
+	users.InitDatabase(context.Background(), db)
+
+	files.InitStorage(minioURI, minioAccessKey, minioSecretKey,
+		minioBucket, minioSSL)
+
+	items.Init(jwtSecret)
+	files.Init(jwtSecret)
+	users.Init(jwtSecret, appURI)
+	facebook.Init(facebookAppID, facebookSecret)
 
 	e := echo.New()
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
+	e.Debug = debug
+	e.Logger = api.NewLoggerConverter()
+	e.Use(
+		middleware.Secure(),
+		middleware.CSRFWithConfig(middleware.CSRFConfig{
+			CookiePath: "/",
+		}),
+		api.RequestLogger(debug),
+		middleware.Recover(),
+		errors.Middleware,
+	)
 
 	e.File("*", "./client/dist/index.html")
 
@@ -36,24 +65,39 @@ func Start(databaseURI string, databaseName string) {
 
 	api := e.Group("/api")
 	{ // routes for /api
-		cog := api.Group("/collections")
+		csg := api.Group("/collections", users.MiddlewareAuth()...)
 		{ // routes for /api/collections
-			cog.Get("", collections.HandleGetAll)
-			cog.Post("", collections.HandlePost)
-			coug := cog.Group("/:collectionUUID", collections.Middleware())
-			{
-				couitg := coug.Group("/items")
-				{ // routes for /api/items
-					couitg.Get("", items.HandleGetAllForCollection)
-					couitg.Post("", items.HandlePost)
-					couitug := couitg.Group("/:itemUUID", items.Middleware())
-					{ // routes for /api/items/:itemUUID
-						couitug.Post("/files", files.HandlePost)
+			csg.GET("", collections.HandleGetAll)
+			csg.POST("", collections.HandlePost)
+			cg := csg.Group("/:collectionSlugOrUUID", collections.Middleware)
+			{ // routes for /api/collections/:collectionSlugOrUUID
+				cg.GET("", collections.HandleGet)
+				cg.DELETE("", collections.HandleDelete)
+				isg := cg.Group("/items")
+				{ // routes for /api/collections/:collectionSlugOrUUID/items
+					isg.GET("", items.HandleGetAllForCollection)
+					isg.POST("", items.HandlePost)
+					ig := isg.Group("/:itemUUID", items.Middleware)
+					{ // routes for /api/collections/:collectionSlugOrUUID/items/:itemUUID
+						ig.DELETE("", items.HandleDelete)
 					}
 				}
 			}
 		}
+		usg := api.Group("/users", users.MiddlewareAuth()...)
+		{ // routes for /api/users
+			usg.GET("/me", users.HandleGetMe)
+		}
+		fsg := api.Group("/files")
+		{ // routes for /api/files
+			fsg.GET("/:fileToken/:filename", files.HandleGet)
+		}
+		ag := api.Group("/auth")
+		{ // routes for /api/auth
+			ag.GET("/login", users.HandleLogin)
+			ag.GET("/callback", users.HandleCallback)
+		}
 	}
 
-	e.Run(standard.New(":8080"))
+	return errorsP.WithStack(e.Start(":8080"))
 }

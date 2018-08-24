@@ -9,6 +9,7 @@ const APP_DIR = path.resolve(__dirname, 'client/src');
 const PRODUCTION = process.env.NODE_ENV === 'production';
 
 let config = {
+    mode: PRODUCTION ? 'production' : 'development',
     devtool: PRODUCTION ? "source-map" : "eval-source-map",
     entry: {
         bundle: APP_DIR + '/client.js',
@@ -20,17 +21,37 @@ let config = {
         publicPath: '/'
     },
     module: {
-        loaders: [{
+        rules: [{
             test: /\.js$/,
             loader: 'babel-loader',
             query: {
-                presets: ['react', 'es2015']
+                presets: ['react', 'es2015', 'stage-2']
             },
             include: APP_DIR
+        }, {
+            test: /\.(jpg|png|gif|svg|pdf|ico)$/,
+            use: [
+                {
+                    loader: 'file-loader',
+                    options: {
+                        name: '[path][name]-[hash:8].[ext]'
+                    },
+                },
+            ]
         }]
     },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    chunks: "initial",
+                    name: "vendor",
+                    enforce: true
+                }
+            }
+        }
+    },
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin({ name: 'vendor' }),
         new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: JSON.stringify(PRODUCTION ? 'production' : 'develoment')
@@ -60,7 +81,9 @@ if (PRODUCTION) {
     ].concat(config.plugins);
 } else {
     config.devServer = {
+        https: true,
         port: 8081,
+        host: '0.0.0.0',
         contentBase: path.join(__dirname, 'client/dist'),
         compress: true,
         proxy: [{
