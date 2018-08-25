@@ -20,6 +20,24 @@ export function fetchItems(collection) {
   };
 }
 
+export function fetchItem(collection, uuid) {
+  return dispatch => {
+    dispatch(fetchItemBegin());
+    return fetch("/api/collections/" + collection.uuid + "/items/" + uuid, {
+      headers: {
+        authorization: "Bearer " + Cookies.get("_token")
+      }
+    })
+      .then(handleErrors)
+      .then(res => res.json())
+      .then(json => {
+        dispatch(fetchItemSuccess(json));
+        return json;
+      })
+      .catch(error => dispatch(fetchItemFailure(error)));
+  };
+}
+
 export function addItem(collection, file) {
   return dispatch => {
     dispatch(addItemBegin());
@@ -58,6 +76,24 @@ export const fetchItemsSuccess = items => ({
 
 export const fetchItemsFailure = error => ({
   type: FETCH_ITEMS_FAILURE,
+  payload: { error }
+});
+
+export const FETCH_ITEM_BEGIN = "FETCH_ITEM_BEGIN";
+export const FETCH_ITEM_SUCCESS = "FETCH_ITEM_SUCCESS";
+export const FETCH_ITEM_FAILURE = "FETCH_ITEM_FAILURE";
+
+export const fetchItemBegin = () => ({
+  type: FETCH_ITEM_BEGIN
+});
+
+export const fetchItemSuccess = item => ({
+  type: FETCH_ITEM_SUCCESS,
+  payload: { item }
+});
+
+export const fetchItemFailure = error => ({
+  type: FETCH_ITEM_FAILURE,
   payload: { error }
 });
 

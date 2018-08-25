@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -29,6 +29,7 @@ const styles = theme => ({
 class Collections extends React.Component {
   constructor(props) {
     super(props);
+
     this.handleOpen = this.handleOpen.bind(this);
   }
 
@@ -45,7 +46,7 @@ class Collections extends React.Component {
   render() {
     const { classes, match } = this.props;
     return (
-      <React.Fragment>
+      <Switch>
         <Route
           exact
           path={match.url}
@@ -84,7 +85,7 @@ class Collections extends React.Component {
           path={`${match.url}/:collectionSlug`}
           component={CollectionPage}
         />
-      </React.Fragment>
+      </Switch>
     );
   }
 }

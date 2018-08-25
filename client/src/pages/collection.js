@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { connect } from "react-redux";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
@@ -9,6 +9,7 @@ import GridListTile from "@material-ui/core/GridListTile";
 import Button from "@material-ui/core/Button";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import { push } from "connected-react-router";
+import grey from "@material-ui/core/colors/grey";
 
 import Page from "./../components/page.js";
 import ItemPage from "./item.js";
@@ -24,16 +25,8 @@ const styles = theme => ({
   grid: {
     width: "100%"
   },
-  link: {
-    display: "inline-block"
-  },
-  titleBar: {
-    background:
-      "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, " +
-      "rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)"
-  },
-  icon: {
-    color: "white"
+  tile: {
+    padding: "2px"
   },
   fab: {
     position: "absolute",
@@ -55,6 +48,7 @@ const BASE_COLUMN_SIZE = 100;
 class List extends React.Component {
   constructor(props) {
     super(props);
+
     this.handleChange = this.handleChange.bind(this);
     this.gridRef = React.createRef();
     this.state = { columns: 10 };
@@ -67,12 +61,20 @@ class List extends React.Component {
     this.props.fetchCollectionAndItems(this.props.match.params.collectionSlug);
   }
 
+  componentWillReceiveProps() {
+    this.resize();
+  }
+
   resize() {
     if (this.gridRef.current) {
       const { width } = ReactDOM.findDOMNode(
         this.gridRef.current
       ).getBoundingClientRect();
-      this.setState({ columns: Math.floor(width / BASE_COLUMN_SIZE) });
+      const columns = Math.floor(width / BASE_COLUMN_SIZE);
+      this.setState({
+        columns,
+        cellHeight: Math.floor(width / columns)
+      });
     }
   }
 
@@ -91,12 +93,23 @@ class List extends React.Component {
     const list = (
       <GridList
         ref={this.gridRef}
-        cellHeight={BASE_COLUMN_SIZE}
+        cellHeight={this.state.cellHeight}
         cols={this.state.columns}
         className={classes.grid}
+        spacing={0}
       >
         {this.props.items.map(item => (
-          <GridListTile key={item.uuid}>
+          <GridListTile
+            key={item.uuid}
+            classes={{
+              tile: classes.tile
+            }}
+            onClick={_ => {
+              if (this.props.collection) {
+                this.props.openItem(this.props.collection, item);
+              }
+            }}
+          >
             <img src={item.picture + "?size=medium"} alt={item.uuid} />
           </GridListTile>
         ))}
@@ -104,7 +117,7 @@ class List extends React.Component {
     );
 
     return (
-      <React.Fragment>
+      <Switch>
         <Route
           exact
           path={match.url}
@@ -129,8 +142,8 @@ class List extends React.Component {
             </Page>
           )}
         />
-        <Route path={`${match.url}/:itemID`} component={ItemPage} />
-      </React.Fragment>
+        <Route path={`${match.url}/:itemUUID`} component={ItemPage} />
+      </Switch>
     );
   }
 }

@@ -57,6 +57,26 @@ func HandleGetAllForCollection(c echo.Context) error {
 	return c.JSON(http.StatusOK, is)
 }
 
+// HandleGet .
+func HandleGet(c echo.Context) error {
+	i := c.Get("item").(*types.Item)
+
+	f, err := files.Get(context.Background(), files.NewCriteria().
+		ResourceType(types.ItemResource).ResourceID(i.ID))
+	if err != nil {
+		return err
+	}
+	if f != nil {
+		uri, err := f.GenerateURI(config.jwtSecret)
+		if err != nil {
+			return err
+		}
+		i.Picture = uri
+	}
+
+	return c.JSON(http.StatusOK, i)
+}
+
 // HandlePost .
 func HandlePost(c echo.Context) error {
 	co := c.Get("collection").(*types.Collection)

@@ -18,7 +18,8 @@ func Middleware(next echo.HandlerFunc) echo.HandlerFunc {
 			return errors.NewNotFound()
 		}
 
-		i, err := Get(context.Background(), newCriteria().CollectionID(co.ID).UUID(uuid))
+		i, err := Get(context.Background(), newCriteria().
+			CollectionID(co.ID).UUID(uuid))
 		if err != nil {
 			return err
 		}

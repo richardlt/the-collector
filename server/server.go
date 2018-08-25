@@ -79,6 +79,7 @@ func Start(
 					isg.POST("", items.HandlePost)
 					ig := isg.Group("/:itemUUID", items.Middleware)
 					{ // routes for /api/collections/:collectionSlugOrUUID/items/:itemUUID
+						ig.GET("", items.HandleGet)
 						ig.DELETE("", items.HandleDelete)
 					}
 				}
