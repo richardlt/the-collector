@@ -8,6 +8,7 @@ import (
 	"image/png"
 	"io"
 
+	"github.com/disintegration/imageorient"
 	"github.com/nfnt/resize"
 	errorsP "github.com/pkg/errors"
 	"github.com/richardlt/the-collector/server/api/errors"
@@ -65,4 +66,20 @@ func calculateImageSize(c image.Config, size int) (uint, uint) {
 	scale := float64(min) / float64(size)
 	return uint(float64(c.Width) / scale),
 		uint(float64(c.Height) / scale)
+}
+
+// FixJpegImageRotation by decode-encode with imageorient lib that takes
+// care of exif value.
+func FixJpegImageRotation(r io.Reader) ([]byte, error) {
+	img, _, err := imageorient.Decode(r)
+	if err != nil {
+		return nil, errorsP.WithStack(err)
+	}
+
+	var w bytes.Buffer
+	if err := jpeg.Encode(&w, img, nil); err != nil {
+		return nil, errorsP.WithStack(err)
+	}
+
+	return w.Bytes(), nil
 }

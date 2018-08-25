@@ -25,6 +25,22 @@
   version = "v3.2.0"
 
 [[projects]]
+  digest = "1:f913195618b6d27f7d83dceb878976ec86e56c7a702e7e7a8aa2a3668b0868be"
+  name = "github.com/disintegration/gift"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "6844aa0778953d7137510a1c74f686ae0e556600"
+  version = "v1.1.2"
+
+[[projects]]
+  branch = "master"
+  digest = "1:3575d35813fc13a49622fea53349c2c8e49705249e916ba2054a243fafb6318e"
+  name = "github.com/disintegration/imageorient"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "1732376a371181e9232837e4fb9ac0e06e5fba71"
+
+[[projects]]
   branch = "master"
   digest = "1:6f9339c912bbdda81302633ad7e99a28dfa5a639c864061f1929510a9a64aa74"
   name = "github.com/dustin/go-humanize"
@@ -195,6 +211,17 @@
   version = "v0.8.0"
 
 [[projects]]
+  branch = "go1"
+  digest = "1:392fafc4b5c7a34734e60ea4efa2199ab77e6e914db643232cbe9d99aa6d65cd"
+  name = "github.com/rwcarlsen/goexif"
+  packages = [
+    "exif",
+    "tiff",
+  ]
+  pruneopts = "UT"
+  revision = "8d986c03457a2057c7b0fb0a48113f7dd48f9619"
+
+[[projects]]
   digest = "1:274f67cb6fed9588ea2521ecdac05a6d62a8c51c074c1fccc6a49a40ba80e925"
   name = "github.com/satori/go.uuid"
   packages = ["."]
@@ -334,6 +361,7 @@
   analyzer-version = 1
   input-imports = [
     "github.com/dgrijalva/jwt-go",
+    "github.com/disintegration/imageorient",
     "github.com/labstack/echo",
     "github.com/labstack/echo/middleware",
     "github.com/labstack/gommon/color",
@@ -345,6 +373,7 @@
     "github.com/mongodb/mongo-go-driver/mongo/updateopt",
     "github.com/nfnt/resize",
     "github.com/pkg/errors",
+    "github.com/rwcarlsen/goexif/exif",
     "github.com/satori/go.uuid",
     "github.com/sirupsen/logrus",
     "gopkg.in/urfave/cli.v1",

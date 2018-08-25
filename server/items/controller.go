@@ -80,7 +80,13 @@ func HandlePost(c echo.Context) error {
 	if err != nil {
 		return errorsP.WithStack(err)
 	}
-	data, err := ioutil.ReadAll(f)
+
+	var data []byte
+	if ct == types.ImageJpeg {
+		data, err = files.FixJpegImageRotation(f)
+	} else {
+		data, err = ioutil.ReadAll(f)
+	}
 	if err != nil {
 		return errorsP.WithStack(err)
 	}
