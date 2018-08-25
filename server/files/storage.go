@@ -7,6 +7,7 @@ import (
 
 	minio "github.com/minio/minio-go"
 	"github.com/pkg/errors"
+	"github.com/richardlt/the-collector/server/types"
 )
 
 var minioClient struct {
@@ -40,8 +41,12 @@ func InitStorage(minioURI, minioAccessKey, minioSecretKey,
 
 // ReadImage .
 func ReadImage(path string, size string) ([]byte, error) {
-	o, err := minioClient.client.GetObject(minioClient.bucket,
-		fmt.Sprintf("%s", path), minio.GetObjectOptions{})
+	if size != types.Original {
+		path = fmt.Sprintf("%s.%s", path, size)
+	}
+
+	o, err := minioClient.client.GetObject(minioClient.bucket, path,
+		minio.GetObjectOptions{})
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}

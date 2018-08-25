@@ -1,6 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
-import { Switch, Route, Redirect } from "react-router";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -9,12 +7,6 @@ import Paper from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import LockIcon from "@material-ui/icons/Lock";
-
-import CollectionsPage from "./collections.js";
-import AddCollectionPage from "./add-collection.js";
-import SettingsPage from "./settings.js";
-import NoMatchPage from "./nomatch.js";
-import { fetchMe } from "./../actions/user";
 
 const styles = theme => ({
   layout: {
@@ -48,21 +40,10 @@ const styles = theme => ({
 });
 
 class Login extends React.Component {
-  componentDidMount() {
-    this.props.fetchMe();
-  }
-
   render() {
     const { classes } = this.props;
-    return this.props.me ? (
-      <Switch>
-        <Redirect exact path="/" to="/collections" />
-        <Route path="/addCollection" component={AddCollectionPage} />
-        <Route path="/collections" component={CollectionsPage} />
-        <Route path="/settings" component={SettingsPage} />
-        <Route component={NoMatchPage} />
-      </Switch>
-    ) : (
+
+    return (
       <React.Fragment>
         <CssBaseline />
         <main className={classes.layout}>
@@ -97,19 +78,4 @@ Login.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-const mapStateToProps = state => ({
-  me: state.users.me
-});
-
-const mapDispatchToProps = dispatch => ({
-  fetchMe: _ => {
-    dispatch(fetchMe());
-  }
-});
-
-export default withStyles(styles)(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Login)
-);
+export default withStyles(styles)(Login);

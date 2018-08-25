@@ -44,7 +44,6 @@ class Collections extends React.Component {
 
   render() {
     const { classes, match } = this.props;
-    
     return (
       <React.Fragment>
         <Route

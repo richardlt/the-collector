@@ -55,7 +55,6 @@ const BASE_COLUMN_SIZE = 100;
 class List extends React.Component {
   constructor(props) {
     super(props);
-    this.handleEdit = this.handleEdit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.gridRef = React.createRef();
     this.state = { columns: 10 };
@@ -98,7 +97,7 @@ class List extends React.Component {
       >
         {this.props.items.map(item => (
           <GridListTile key={item.uuid}>
-            <img src={item.picture} alt={item.uuid} />
+            <img src={item.picture + "?size=medium"} alt={item.uuid} />
           </GridListTile>
         ))}
       </GridList>

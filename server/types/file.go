@@ -28,6 +28,7 @@ func IsImageContentType(contentType string) bool {
 
 // Image sizes
 const (
+	Small    string = "small"
 	Medium   string = "medium"
 	Large    string = "large"
 	Original string = ""
@@ -36,7 +37,7 @@ const (
 // IsValidSize .
 func IsValidSize(size string) bool {
 	switch size {
-	case Medium, Large, Original:
+	case Small, Medium, Large, Original:
 		return true
 	}
 	return false
@@ -45,6 +46,8 @@ func IsValidSize(size string) bool {
 // SizeToPixels .
 func SizeToPixels(size string) int {
 	switch size {
+	case Small:
+		return 100
 	case Medium:
 		return 200
 	case Large:
