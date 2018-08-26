@@ -1,8 +1,14 @@
 package types
 
-// Collection : collection struct
+import (
+	"github.com/mongodb/mongo-go-driver/bson/objectid"
+	"github.com/richardlt/the-collector/server/database"
+)
+
+// Collection .
 type Collection struct {
-	Entity `bson:",inline"`
-	Name   string `bson:"name" json:"name" valid:"string,len(0|100)"`
-	Slug   string `bson:"slug" json:"slug" valid:"-"`
+	database.BasicEntity `bson:",inline"`
+	UserID               objectid.ObjectID `bson:"_user_id" json:"-"`
+	Name                 string            `bson:"name" json:"name"`
+	Slug                 string            `bson:"slug" json:"slug"`
 }

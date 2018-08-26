@@ -1,28 +1,33 @@
 package collections
 
 import (
-	"net/http"
+	"context"
 
 	"github.com/labstack/echo"
+	"github.com/richardlt/the-collector/server/api/errors"
+	"github.com/richardlt/the-collector/server/types"
 )
 
-// Middleware : collection middleware
-func Middleware() echo.MiddlewareFunc {
-	return func(next echo.HandlerFunc) echo.HandlerFunc {
-		return echo.HandlerFunc(func(c echo.Context) (err error) {
-			collectionUUID := c.Param("collectionUUID")
-			if collectionUUID == "" {
-				return c.JSON(http.StatusBadRequest, nil)
-			}
-			collection, err := GetByUUID(collectionUUID)
-			if err != nil {
-				return c.JSON(http.StatusInternalServerError, nil)
-			}
-			if collection == nil {
-				return c.JSON(http.StatusNotFound, nil)
-			}
-			c.Set("collection", collection)
-			return next(c)
-		})
-	}
+// Middleware .
+func Middleware(next echo.HandlerFunc) echo.HandlerFunc {
+	return echo.HandlerFunc(func(c echo.Context) (err error) {
+		me := c.Get("me").(*types.User)
+
+		slugOrUUID := c.Param("collectionSlugOrUUID")
+		if slugOrUUID == "" {
+			return errors.NewNotFound()
+		}
+
+		co, err := Get(context.Background(), newCriteria().
+			UserID(me.ID).SlugOrUUID(slugOrUUID))
+		if err != nil {
+			return err
+		}
+		if co == nil {
+			return errors.NewNotFound()
+		}
+
+		c.Set("collection", co)
+		return next(c)
+	})
 }

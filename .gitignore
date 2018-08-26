@@ -4,3 +4,4 @@ client/dist
 the-collector-package
 the-collector.zip
 .DS_Store
+config.yml
