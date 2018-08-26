@@ -26,5 +26,5 @@
   # run
   docker network create the-collector
   docker run -d --name mongo --network the-collector mongo
-  docker run -d -p 8080:8080 --name the-collector --network the-collector richardleterrier/the-collector --database-uri mongo:27017 start
+  docker run -d -p 8080:8080 --name the-collector --network the-collector richardleterrier/the-collector start --database-uri mongo:27017
 ```
