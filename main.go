@@ -1,10 +1,12 @@
 package main
 
 import (
-	"log"
 	"os"
 
+	"github.com/evalphobia/logrus_sentry"
+	"github.com/pkg/errors"
 	"github.com/richardlt/the-collector/server"
+	"github.com/sirupsen/logrus"
 	cli "gopkg.in/urfave/cli.v1"
 	"gopkg.in/urfave/cli.v1/altsrc"
 )
@@ -73,6 +75,15 @@ func main() {
 			Name:   "minio-ssl",
 			EnvVar: "THE_COLLECTOR_MINIO_SSL",
 		}),
+		altsrc.NewBoolFlag(cli.BoolFlag{
+			Name:   "sentry",
+			EnvVar: "THE_COLLECTOR_SENTRY",
+		}),
+		altsrc.NewStringFlag(cli.StringFlag{
+			Name:   "sentry-dsn",
+			Value:  "",
+			EnvVar: "THE_COLLECTOR_SENTRY_DSN",
+		}),
 	}
 
 	app.Commands = []cli.Command{
@@ -86,10 +97,28 @@ func main() {
 					if err == nil {
 						return i, err
 					}
+
 					return &altsrc.MapInputSource{}, nil
 				},
 			),
 			Action: func(c *cli.Context) {
+				if c.Bool("sentry") {
+					hook, err := logrus_sentry.NewSentryHook(
+						c.String("sentry-dsn"),
+						[]logrus.Level{
+							logrus.PanicLevel,
+							logrus.FatalLevel,
+							logrus.ErrorLevel,
+							logrus.WarnLevel,
+						},
+					)
+					if err != nil {
+						logrus.Fatal(errors.WithStack(err))
+					}
+
+					logrus.AddHook(hook)
+				}
+
 				if err := server.Start(
 					c.String("app-uri"), c.String("jwt-secret"), c.Bool("debug"),
 					c.String("database-uri"), c.String("database-name"),
@@ -98,7 +127,7 @@ func main() {
 					c.String("minio-secret-key"), c.String("minio-bucket"),
 					c.Bool("minio-ssl"),
 				); err != nil {
-					log.Fatal(err)
+					logrus.Fatal(err)
 				}
 			},
 		},

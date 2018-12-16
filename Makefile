@@ -21,7 +21,13 @@ package:
 	cd the-collector-package && zip -ro ../the-collector.zip * && cd ..
 
 dockerize:
-	docker build -t richardleterrier/the-collector:latest .
+	docker build -t richardleterrier/the-collector:build .
+
+publish:
+	docker tag richardleterrier/the-collector:build richardleterrier/the-collector:$(VERSION)
+	docker tag richardleterrier/the-collector:build richardleterrier/the-collector:latest
+	docker push richardleterrier/the-collector:$(VERSION)
+	docker push richardleterrier/the-collector:latest
 
 test: 	
 	go test -race github.com/richardlt/the-collector/server/... -v
