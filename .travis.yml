@@ -5,9 +5,9 @@ services: docker
 install: make install
 script: make test
 before_deploy:
-- make build package dockerize
 - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-- docker push richardleterrier/the-collector:latest
+- export VERSION=$TRAVIS_TAG
+- make build package dockerize publish
 deploy:
   provider: releases
   api_key:
