@@ -19,7 +19,7 @@ import (
 
 // Start .
 func Start(
-	appURI, jwtSecret string, debug bool,
+	appURI, jwtSecret, secret string, debug bool,
 	databaseURI, databaseName string,
 	facebookAppID, facebookSecret string,
 	minioURI, minioAccessKey, minioSecretKey, minioBucket string, minioSSL bool,
@@ -43,7 +43,7 @@ func Start(
 
 	items.Init(jwtSecret)
 	files.Init(jwtSecret)
-	users.Init(jwtSecret, appURI)
+	users.Init(jwtSecret, secret, appURI)
 	facebook.Init(facebookAppID, facebookSecret)
 
 	e := echo.New()

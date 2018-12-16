@@ -31,6 +31,11 @@ func main() {
 			Value:  "secret-key",
 			EnvVar: "THE_COLLECTOR_JWT_SECRET",
 		}),
+		altsrc.NewStringFlag(cli.StringFlag{
+			Name:   "secret",
+			Value:  "secret-key",
+			EnvVar: "THE_COLLECTOR_SECRET",
+		}),
 		altsrc.NewBoolFlag(cli.BoolFlag{
 			Name:   "debug",
 			EnvVar: "THE_COLLECTOR_DEBUG",
@@ -120,7 +125,7 @@ func main() {
 				}
 
 				if err := server.Start(
-					c.String("app-uri"), c.String("jwt-secret"), c.Bool("debug"),
+					c.String("app-uri"), c.String("jwt-secret"), c.String("secret"), c.Bool("debug"),
 					c.String("database-uri"), c.String("database-name"),
 					c.String("facebook-app-id"), c.String("facebook-app-secret"),
 					c.String("minio-uri"), c.String("minio-access-key"),

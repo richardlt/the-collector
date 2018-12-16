@@ -74,10 +74,15 @@ func HandleCallback(c echo.Context) error {
 		}
 	}
 
+	encrypted, err := api.Encrypt([]byte(at.AccessToken), config.secret)
+	if err != nil {
+		return err
+	}
+
 	if err := createAuth(context.Background(), &types.Auth{
 		UserID:      u.ID,
 		Type:        types.Facebook,
-		AccessToken: at.AccessToken,
+		AccessToken: string(encrypted),
 		Expires:     expires,
 	}); err != nil {
 		return err

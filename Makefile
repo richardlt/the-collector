@@ -17,7 +17,7 @@ build:
 package:
 	mkdir -p ./the-collector-package/client/dist
 	cp ./the-collector ./the-collector-package
-	cp -vr ./client/dist/ ./the-collector-package/client/dist
+	cp -vr ./client/dist ./the-collector-package/client
 	cd the-collector-package && zip -ro ../the-collector.zip * && cd ..
 
 dockerize:
