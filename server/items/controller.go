@@ -11,11 +11,12 @@ import (
 	"github.com/labstack/echo"
 	"github.com/mongodb/mongo-go-driver/bson/objectid"
 	errorsP "github.com/pkg/errors"
+	uuid "github.com/satori/go.uuid"
+
 	"github.com/richardlt/the-collector/server/api"
 	"github.com/richardlt/the-collector/server/api/errors"
 	"github.com/richardlt/the-collector/server/files"
 	"github.com/richardlt/the-collector/server/types"
-	uuid "github.com/satori/go.uuid"
 )
 
 // HandleGetAllForCollection .
@@ -121,16 +122,23 @@ func HandlePost(c echo.Context) error {
 		return err
 	}
 
-	if err := files.Create(context.Background(), &types.File{
+	file := &types.File{
 		ResourceType: types.ItemResource,
 		ResourceID:   item.ID,
 		Name:         filename,
 		Path:         path,
 		Size:         int64(len(data)),
 		ContentType:  ct,
-	}); err != nil {
+	}
+	if err := files.Create(context.Background(), file); err != nil {
 		return err
 	}
+
+	uri, err := file.GenerateURI(config.jwtSecret)
+	if err != nil {
+		return err
+	}
+	item.Picture = uri
 
 	return c.JSON(http.StatusOK, item)
 }
@@ -138,6 +146,20 @@ func HandlePost(c echo.Context) error {
 // HandleDelete .
 func HandleDelete(c echo.Context) error {
 	i := c.Get("item").(*types.Item)
+
+	f, err := files.Get(context.Background(), files.NewCriteria().
+		ResourceType(types.ItemResource).ResourceID(i.ID))
+	if err != nil {
+		return err
+	}
+	if f != nil {
+		if err := files.DeleteFile(f.Path); err != nil {
+			return err
+		}
+		if err := files.Delete(context.Background(), f); err != nil {
+			return err
+		}
+	}
 
 	if err := Delete(context.Background(), i); err != nil {
 		return err

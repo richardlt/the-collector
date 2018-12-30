@@ -3,6 +3,7 @@ package api
 import (
 	jwt "github.com/dgrijalva/jwt-go"
 	errorsP "github.com/pkg/errors"
+
 	"github.com/richardlt/the-collector/server/api/errors"
 )
 

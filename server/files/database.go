@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/mongodb/mongo-go-driver/mongo"
+
 	"github.com/richardlt/the-collector/server/database"
 	"github.com/richardlt/the-collector/server/types"
 )
@@ -29,6 +30,11 @@ func InitDatabase(ctx context.Context, db *mongo.Database) error {
 // Create .
 func Create(ctx context.Context, f *types.File) error {
 	return database.Create(ctx, collection, f)
+}
+
+// Delete .
+func Delete(ctx context.Context, f *types.File) error {
+	return database.Delete(ctx, collection, f)
 }
 
 // GetAll .

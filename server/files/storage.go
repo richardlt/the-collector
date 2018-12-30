@@ -7,6 +7,7 @@ import (
 
 	minio "github.com/minio/minio-go"
 	"github.com/pkg/errors"
+
 	"github.com/richardlt/the-collector/server/types"
 )
 
@@ -68,4 +69,9 @@ func SaveFile(data []byte, path string) error {
 	_, err := minioClient.client.PutObject(minioClient.bucket, path, r,
 		r.Size(), minio.PutObjectOptions{})
 	return errors.WithStack(err)
+}
+
+// DeleteFile .
+func DeleteFile(path string) error {
+	return errors.WithStack(minioClient.client.RemoveObject(minioClient.bucket, path))
 }

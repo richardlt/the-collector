@@ -8,6 +8,7 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/mongodb/mongo-go-driver/mongo"
 	errorsP "github.com/pkg/errors"
+
 	"github.com/richardlt/the-collector/server/api"
 	"github.com/richardlt/the-collector/server/api/errors"
 	"github.com/richardlt/the-collector/server/collections"

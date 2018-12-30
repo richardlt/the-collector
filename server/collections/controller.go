@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo"
+
 	"github.com/richardlt/the-collector/server/api"
 	"github.com/richardlt/the-collector/server/api/errors"
 	"github.com/richardlt/the-collector/server/types"

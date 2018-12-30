@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/mongodb/mongo-go-driver/mongo"
+
 	"github.com/richardlt/the-collector/server/database"
 	"github.com/richardlt/the-collector/server/types"
 )

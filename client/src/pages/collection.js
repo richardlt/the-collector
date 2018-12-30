@@ -9,8 +9,6 @@ import GridListTile from "@material-ui/core/GridListTile";
 import Button from "@material-ui/core/Button";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import { push } from "connected-react-router";
-import grey from "@material-ui/core/colors/grey";
-
 import Page from "./../components/page.js";
 import ItemPage from "./item.js";
 import { fetchCollection } from "./../actions/collection";
@@ -62,7 +60,10 @@ class List extends React.Component {
     this.props.fetchCollectionAndItems(this.props.match.params.collectionSlug);
   }
 
-  componentWillReceiveProps() { }
+  componentWillReceiveProps() {
+    // resize when receiving props, handle navigate from item to collection
+    this.resize();
+  }
 
   resize() {
     if (this.gridRef.current) {
@@ -168,13 +169,8 @@ const mapDispatchToProps = dispatch => ({
       dispatch(fetchItems(collection));
     });
   },
-  fetchItems: href => {
-    dispatch(fetchItems(href));
-  },
   addItem: (collection, file) => {
-    dispatch(addItem(collection, file)).then(_ => {
-      dispatch(fetchItems(collection));
-    });
+    dispatch(addItem(collection, file));
   }
 });
 

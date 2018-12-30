@@ -11,6 +11,7 @@ import (
 	"github.com/disintegration/imageorient"
 	"github.com/nfnt/resize"
 	errorsP "github.com/pkg/errors"
+
 	"github.com/richardlt/the-collector/server/api/errors"
 	"github.com/richardlt/the-collector/server/types"
 )

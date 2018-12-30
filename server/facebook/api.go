@@ -7,8 +7,9 @@ import (
 	"net/http"
 
 	errorsP "github.com/pkg/errors"
-	"github.com/richardlt/the-collector/server/api/errors"
 	"github.com/sirupsen/logrus"
+
+	"github.com/richardlt/the-collector/server/api/errors"
 )
 
 const (

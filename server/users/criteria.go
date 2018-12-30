@@ -2,6 +2,7 @@ package users
 
 import (
 	"github.com/mongodb/mongo-go-driver/bson/objectid"
+
 	"github.com/richardlt/the-collector/server/database"
 )
 
