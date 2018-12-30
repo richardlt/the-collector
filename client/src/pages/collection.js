@@ -23,7 +23,8 @@ const styles = theme => ({
     overflow: "auto"
   },
   grid: {
-    width: "100%"
+    width: "100%",
+    overflow: "hidden"
   },
   tile: {
     padding: "2px"
@@ -51,7 +52,7 @@ class List extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.gridRef = React.createRef();
-    this.state = { columns: 10 };
+    this.state = { columns: 10, cellHeight: BASE_COLUMN_SIZE };
     this.inputFileRef = React.createRef();
   }
 
@@ -61,9 +62,7 @@ class List extends React.Component {
     this.props.fetchCollectionAndItems(this.props.match.params.collectionSlug);
   }
 
-  componentWillReceiveProps() {
-    this.resize();
-  }
+  componentWillReceiveProps() { }
 
   resize() {
     if (this.gridRef.current) {
