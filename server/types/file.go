@@ -7,6 +7,7 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/mongodb/mongo-go-driver/bson/objectid"
 	"github.com/pkg/errors"
+
 	"github.com/richardlt/the-collector/server/database"
 )
 

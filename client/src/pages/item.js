@@ -2,8 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-
-import { fetchItem } from "./../actions/item";
+import { Grid, Button } from "@material-ui/core";
+import { push } from "connected-react-router";
+import { fetchItem, deleteItem } from "./../actions/item";
 import Details from "./../components/details.js";
 
 const styles = theme => ({});
@@ -13,6 +14,7 @@ class Item extends React.Component {
     super(props);
 
     this.refreshItem = this.refreshItem.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
   }
 
   componentDidMount() {
@@ -30,14 +32,29 @@ class Item extends React.Component {
     }
   }
 
+  deleteItem() {
+    this.props.deleteItem(this.props.collection, this.props.item.uuid);
+  }
+
   render() {
     return (
       <Details title="Item details">
-        {this.props.item ? (
-          <img width="100%" src={this.props.item.picture} />
-        ) : (
-          ""
-        )}
+        <Grid container spacing={16}>
+          <Grid item xs={12} sm={8}>
+            {this.props.item ? (
+              <img width="100%" src={this.props.item.picture} />
+            ) : (
+                ""
+              )}
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Grid container direction="column" alignItems="center">
+              <Grid item>
+                <Button variant="contained" color="secondary" onClick={this.deleteItem}>Delete</Button>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
       </Details>
     );
   }
@@ -56,6 +73,11 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   fetchItem: (collection, itemUUID) => {
     dispatch(fetchItem(collection, itemUUID));
+  },
+  deleteItem: (collection, itemUUID) => {
+    dispatch(deleteItem(collection, itemUUID)).then(_ => {
+      dispatch(push("/collections/" + collection.slug));
+    });
   }
 });
 

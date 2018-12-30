@@ -10,6 +10,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	errorsP "github.com/pkg/errors"
+
 	"github.com/richardlt/the-collector/server/api"
 	"github.com/richardlt/the-collector/server/api/errors"
 	"github.com/richardlt/the-collector/server/facebook"
