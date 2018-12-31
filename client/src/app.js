@@ -1,20 +1,19 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import { connect } from "react-redux";
-import { Route, Switch, Redirect } from "react-router-dom";
-import CircularProgress from "@material-ui/core/CircularProgress";
-
-import CollectionsPage from "./pages/collections";
-import AddCollectionPage from "./pages/add-collection";
-import SettingsPage from "./pages/settings";
-import LoginPage from "./pages/login";
-import NoMatchPage from "./pages/nomatch";
-import { fetchMe } from "./actions/user";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import CollectionsPage from './pages/collections';
+import AddCollectionPage from './pages/add-collection';
+import SettingsPage from './pages/settings';
+import LoginPage from './pages/login';
+import NoMatchPage from './pages/nomatch';
+import { fetchMe } from './actions/user';
 
 const styles = theme => ({
   progress: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
     right: 0,
     margin: theme.spacing.unit * 2

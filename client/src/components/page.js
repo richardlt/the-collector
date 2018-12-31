@@ -1,58 +1,58 @@
-import React from "react";
-import { connect } from "react-redux";
-import { push } from "connected-react-router";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import ViewModuleIcon from "@material-ui/icons/ViewModule";
-import SettingsIcon from "@material-ui/icons/SettingsOutlined";
-import Divider from "@material-ui/core/Divider";
-import Hidden from "@material-ui/core/Hidden";
-import Drawer from "@material-ui/core/Drawer";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import React from 'react';
+import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import ViewModuleIcon from '@material-ui/icons/ViewModule';
+import SettingsIcon from '@material-ui/icons/SettingsOutlined';
+import Divider from '@material-ui/core/Divider';
+import Hidden from '@material-ui/core/Hidden';
+import Drawer from '@material-ui/core/Drawer';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
-    position: "relative",
-    display: "flex",
-    flexDirection: "row",
-    width: "100%",
-    height: "100%"
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    height: '100%'
   },
   menuButton: {
     marginLeft: -12,
     marginRight: 20,
-    [theme.breakpoints.up("md")]: {
-      display: "none"
+    [theme.breakpoints.up('md')]: {
+      display: 'none'
     }
   },
   drawerWrapper: { width: drawerWidth },
   drawerPaper: {
     width: drawerWidth,
-    [theme.breakpoints.up("md")]: {
-      position: "fixed"
+    [theme.breakpoints.up('md')]: {
+      position: 'fixed'
     }
   },
   contentWrapper: {
     flex: 1,
-    height: "100%",
-    width: "100%",
-    display: "flex",
-    flexDirection: "column"
+    height: '100%',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column'
   },
-  appBar: { position: "static" },
+  appBar: { position: 'static' },
   content: {
     flex: 1,
-    overflow: "hidden"
+    overflow: 'hidden'
   }
 });
 
@@ -96,7 +96,7 @@ class Page extends React.Component {
           <Hidden mdUp className={classes.drawerWrapper}>
             <Drawer
               variant="temporary"
-              anchor={"left"}
+              anchor={'left'}
               open={this.state.menuOpen}
               onClose={this.handleOpenMenu}
               classes={{ paper: classes.drawerPaper }}
@@ -148,10 +148,10 @@ const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({
   goCollections: _ => {
-    dispatch(push("/collections"));
+    dispatch(push('/collections'));
   },
   goSettings: _ => {
-    dispatch(push("/settings"));
+    dispatch(push('/settings'));
   }
 });
 

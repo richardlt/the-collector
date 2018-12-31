@@ -1,6 +1,5 @@
-import React from "react";
-
-import Details from "./../components/details";
+import React from 'react';
+import Details from './../components/details';
 
 class Settings extends React.Component {
   render() {

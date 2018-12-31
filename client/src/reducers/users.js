@@ -2,7 +2,7 @@ import {
   FETCH_ME_BEGIN,
   FETCH_ME_SUCCESS,
   FETCH_ME_FAILURE
-} from "../actions/user";
+} from '../actions/user';
 
 const initialState = {
   me: null,

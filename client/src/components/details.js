@@ -1,27 +1,27 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { goBack } from "connected-react-router";
-import { withStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { goBack } from 'connected-react-router';
+import { withStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 const styles = theme => ({
   root: {
-    position: "relative",
-    display: "flex",
-    flexDirection: "row",
-    width: "100%"
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%'
   },
   backButton: {
     marginLeft: -12,
     marginRight: 20
   },
-  appBar: { position: "sticky" },
+  appBar: { position: 'sticky' },
   contentWrapper: { flex: 1 },
   content: { padding: theme.spacing.unit }
 });

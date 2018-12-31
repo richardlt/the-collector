@@ -10,8 +10,8 @@ import {
   ADD_ITEM_FAILURE,
   DELETE_ITEM_BEGIN,
   DELETE_ITEM_SUCCESS,
-  DELETE_ITEM_FAILURE,
-} from "../actions/item";
+  DELETE_ITEM_FAILURE
+} from '../actions/item';
 
 const initialState = {
   all: [],

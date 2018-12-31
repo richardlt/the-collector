@@ -5,7 +5,7 @@ import {
   FETCH_COLLECTION_BEGIN,
   FETCH_COLLECTION_SUCCESS,
   FETCH_COLLECTION_FAILURE
-} from "../actions/collection";
+} from '../actions/collection';
 
 const initialState = {
   all: [],

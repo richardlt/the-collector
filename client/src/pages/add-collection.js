@@ -1,20 +1,19 @@
-import React from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-
-import Details from "./../components/details";
-import { addCollection } from "./../actions/collection";
+import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Details from './../components/details';
+import { addCollection } from './../actions/collection';
 
 const styles = theme => ({
   textField: {
-    width: "100%"
+    width: '100%'
   },
   buttons: {
-    display: "flex",
-    justifyContent: "flex-end"
+    display: 'flex',
+    justifyContent: 'flex-end'
   },
   create: {
     marginTop: theme.spacing.unit * 3,
@@ -27,7 +26,7 @@ class AddCollection extends React.Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { name: "" };
+    this.state = { name: '' };
   }
 
   handleChange(event) {

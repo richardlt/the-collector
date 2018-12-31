@@ -1,13 +1,17 @@
-import React from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import { Grid, Button } from "@material-ui/core";
-import { push } from "connected-react-router";
-import { fetchItem, deleteItem } from "./../actions/item";
-import Details from "./../components/details.js";
+import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import { Grid, Button } from '@material-ui/core';
+import { push } from 'connected-react-router';
+import { fetchItem, deleteItem } from './../actions/item';
+import Details from './../components/details.js';
 
-const styles = theme => ({});
+const styles = theme => ({
+  picture: {
+    width: '50%'
+  }
+});
 
 class Item extends React.Component {
   constructor(props) {
@@ -37,20 +41,33 @@ class Item extends React.Component {
   }
 
   render() {
+    const { classes } = this.props;
+
     return (
       <Details title="Item details">
         <Grid container spacing={16}>
-          <Grid item xs={12} sm={8}>
-            {this.props.item ? (
-              <img width="100%" src={this.props.item.picture} />
-            ) : (
-                ""
+          <Grid item xs={12} sm={6}>
+            <Grid container direction="column" alignItems="center">
+              {this.props.item ? (
+                <img
+                  className={classes.picture}
+                  src={this.props.item.picture + '?size=medium'}
+                />
+              ) : (
+                ''
               )}
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={6}>
             <Grid container direction="column" alignItems="center">
               <Grid item>
-                <Button variant="contained" color="secondary" onClick={this.deleteItem}>Delete</Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={this.deleteItem}
+                >
+                  Delete
+                </Button>
               </Grid>
             </Grid>
           </Grid>
@@ -76,7 +93,7 @@ const mapDispatchToProps = dispatch => ({
   },
   deleteItem: (collection, itemUUID) => {
     dispatch(deleteItem(collection, itemUUID)).then(_ => {
-      dispatch(push("/collections/" + collection.slug));
+      dispatch(push('/collections/' + collection.slug));
     });
   }
 });

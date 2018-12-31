@@ -1,13 +1,12 @@
-import Cookies from "js-cookie";
-
-import { handleErrors } from "./error";
+import Cookies from 'js-cookie';
+import { handleErrors } from './error';
 
 export function fetchItems(collection) {
   return dispatch => {
     dispatch(fetchItemsBegin());
-    return fetch("/api/collections/" + collection.uuid + "/items", {
+    return fetch('/api/collections/' + collection.uuid + '/items', {
       headers: {
-        authorization: "Bearer " + Cookies.get("_token")
+        authorization: 'Bearer ' + Cookies.get('_token')
       }
     })
       .then(handleErrors)
@@ -23,9 +22,9 @@ export function fetchItems(collection) {
 export function fetchItem(collection, uuid) {
   return dispatch => {
     dispatch(fetchItemBegin());
-    return fetch("/api/collections/" + collection.uuid + "/items/" + uuid, {
+    return fetch('/api/collections/' + collection.uuid + '/items/' + uuid, {
       headers: {
-        authorization: "Bearer " + Cookies.get("_token")
+        authorization: 'Bearer ' + Cookies.get('_token')
       }
     })
       .then(handleErrors)
@@ -42,12 +41,12 @@ export function addItem(collection, file) {
   return dispatch => {
     dispatch(addItemBegin());
     let formData = new FormData();
-    formData.append("file", file);
-    return fetch("/api/collections/" + collection.uuid + "/items", {
-      method: "POST",
+    formData.append('file', file);
+    return fetch('/api/collections/' + collection.uuid + '/items', {
+      method: 'POST',
       headers: {
-        authorization: "Bearer " + Cookies.get("_token"),
-        "X-CSRF-Token": Cookies.get("_csrf")
+        authorization: 'Bearer ' + Cookies.get('_token'),
+        'X-CSRF-Token': Cookies.get('_csrf')
       },
       body: formData
     })
@@ -64,11 +63,11 @@ export function addItem(collection, file) {
 export function deleteItem(collection, uuid) {
   return dispatch => {
     dispatch(deleteItemBegin());
-    return fetch("/api/collections/" + collection.uuid + "/items/" + uuid, {
-      method: "DELETE",
+    return fetch('/api/collections/' + collection.uuid + '/items/' + uuid, {
+      method: 'DELETE',
       headers: {
-        authorization: "Bearer " + Cookies.get("_token"),
-        "X-CSRF-Token": Cookies.get("_csrf")
+        authorization: 'Bearer ' + Cookies.get('_token'),
+        'X-CSRF-Token': Cookies.get('_csrf')
       }
     })
       .then(handleErrors)
@@ -80,9 +79,9 @@ export function deleteItem(collection, uuid) {
   };
 }
 
-export const FETCH_ITEMS_BEGIN = "FETCH_ITEMS_BEGIN";
-export const FETCH_ITEMS_SUCCESS = "FETCH_ITEMS_SUCCESS";
-export const FETCH_ITEMS_FAILURE = "FETCH_ITEMS_FAILURE";
+export const FETCH_ITEMS_BEGIN = 'FETCH_ITEMS_BEGIN';
+export const FETCH_ITEMS_SUCCESS = 'FETCH_ITEMS_SUCCESS';
+export const FETCH_ITEMS_FAILURE = 'FETCH_ITEMS_FAILURE';
 
 export const fetchItemsBegin = () => ({
   type: FETCH_ITEMS_BEGIN
@@ -98,9 +97,9 @@ export const fetchItemsFailure = error => ({
   payload: { error }
 });
 
-export const FETCH_ITEM_BEGIN = "FETCH_ITEM_BEGIN";
-export const FETCH_ITEM_SUCCESS = "FETCH_ITEM_SUCCESS";
-export const FETCH_ITEM_FAILURE = "FETCH_ITEM_FAILURE";
+export const FETCH_ITEM_BEGIN = 'FETCH_ITEM_BEGIN';
+export const FETCH_ITEM_SUCCESS = 'FETCH_ITEM_SUCCESS';
+export const FETCH_ITEM_FAILURE = 'FETCH_ITEM_FAILURE';
 
 export const fetchItemBegin = () => ({
   type: FETCH_ITEM_BEGIN
@@ -116,9 +115,9 @@ export const fetchItemFailure = error => ({
   payload: { error }
 });
 
-export const ADD_ITEM_BEGIN = "ADD_ITEM_BEGIN";
-export const ADD_ITEM_SUCCESS = "ADD_ITEM_SUCCESS";
-export const ADD_ITEM_FAILURE = "ADD_ITEM_FAILURE";
+export const ADD_ITEM_BEGIN = 'ADD_ITEM_BEGIN';
+export const ADD_ITEM_SUCCESS = 'ADD_ITEM_SUCCESS';
+export const ADD_ITEM_FAILURE = 'ADD_ITEM_FAILURE';
 
 export const addItemBegin = () => ({
   type: ADD_ITEM_BEGIN
@@ -134,15 +133,15 @@ export const addItemFailure = error => ({
   payload: { error }
 });
 
-export const DELETE_ITEM_BEGIN = "DELETE_ITEM_BEGIN";
-export const DELETE_ITEM_SUCCESS = "DELETE_ITEM_SUCCESS";
-export const DELETE_ITEM_FAILURE = "DELETE_ITEM_FAILURE";
+export const DELETE_ITEM_BEGIN = 'DELETE_ITEM_BEGIN';
+export const DELETE_ITEM_SUCCESS = 'DELETE_ITEM_SUCCESS';
+export const DELETE_ITEM_FAILURE = 'DELETE_ITEM_FAILURE';
 
 export const deleteItemBegin = () => ({
   type: DELETE_ITEM_BEGIN
 });
 
-export const deleteItemSuccess = (uuid) => ({
+export const deleteItemSuccess = uuid => ({
   type: DELETE_ITEM_SUCCESS,
   payload: { uuid }
 });

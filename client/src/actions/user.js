@@ -1,13 +1,12 @@
-import Cookies from "js-cookie";
-
-import { handleErrors } from "./error";
+import Cookies from 'js-cookie';
+import { handleErrors } from './error';
 
 export function fetchMe() {
   return dispatch => {
     dispatch(fetchMeBegin());
-    return fetch("/api/users/me", {
+    return fetch('/api/users/me', {
       headers: {
-        authorization: "Bearer " + Cookies.get("_token")
+        authorization: 'Bearer ' + Cookies.get('_token')
       }
     })
       .then(handleErrors)
@@ -22,9 +21,9 @@ export function fetchMe() {
   };
 }
 
-export const FETCH_ME_BEGIN = "FETCH_ME_BEGIN";
-export const FETCH_ME_SUCCESS = "FETCH_ME_SUCCESS";
-export const FETCH_ME_FAILURE = "FETCH_ME_FAILURE";
+export const FETCH_ME_BEGIN = 'FETCH_ME_BEGIN';
+export const FETCH_ME_SUCCESS = 'FETCH_ME_SUCCESS';
+export const FETCH_ME_FAILURE = 'FETCH_ME_FAILURE';
 
 export const fetchMeBegin = () => ({
   type: FETCH_ME_BEGIN

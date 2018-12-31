@@ -45,6 +45,6 @@
   "scripts": {
     "start": "webpack-dev-server",
     "build": "NODE_ENV=production webpack",
-    "prettier": "prettier"
+    "prettier": "prettier --single-quote es5 --write \"{client/src,__{tests,mocks}__}/**/*.js\""
   }
 }

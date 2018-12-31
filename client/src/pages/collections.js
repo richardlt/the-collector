@@ -1,26 +1,25 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { withStyles } from "@material-ui/core/styles";
-import { Route, Switch } from "react-router-dom";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import ListItemText from "@material-ui/core/ListItemText";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import FolderIcon from "@material-ui/icons/Folder";
-import AddIcon from "@material-ui/icons/Add";
-import { push } from "connected-react-router";
-
-import Page from "./../components/page.js";
-import CollectionPage from "./collection.js";
-import { fetchCollections } from "./../actions/collection";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { withStyles } from '@material-ui/core/styles';
+import { Route, Switch } from 'react-router-dom';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import FolderIcon from '@material-ui/icons/Folder';
+import AddIcon from '@material-ui/icons/Add';
+import { push } from 'connected-react-router';
+import Page from './../components/page.js';
+import CollectionPage from './collection.js';
+import { fetchCollections } from './../actions/collection';
 
 const styles = theme => ({
-  list: { height: "100%", overflow: "auto" },
+  list: { height: '100%', overflow: 'auto' },
   fab: {
-    position: "absolute",
+    position: 'absolute',
     bottom: theme.spacing.unit * 2,
     right: theme.spacing.unit * 2
   }
@@ -104,13 +103,13 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   openCollection: slug => {
-    dispatch(push("/collections/" + slug));
+    dispatch(push('/collections/' + slug));
   },
   fetchCollections: _ => {
     dispatch(fetchCollections());
   },
   addCollection: _ => {
-    dispatch(push("/addCollection"));
+    dispatch(push('/addCollection'));
   }
 });
 

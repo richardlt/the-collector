@@ -1,13 +1,12 @@
-import Cookies from "js-cookie";
-
-import { handleErrors } from "./error";
+import Cookies from 'js-cookie';
+import { handleErrors } from './error';
 
 export function fetchCollections() {
   return dispatch => {
     dispatch(fetchCollectionsBegin());
-    return fetch("/api/collections", {
+    return fetch('/api/collections', {
       headers: {
-        authorization: "Bearer " + Cookies.get("_token")
+        authorization: 'Bearer ' + Cookies.get('_token')
       }
     })
       .then(handleErrors)
@@ -23,9 +22,9 @@ export function fetchCollections() {
 export function fetchCollection(slug) {
   return dispatch => {
     dispatch(fetchCollectionBegin());
-    return fetch("/api/collections/" + slug, {
+    return fetch('/api/collections/' + slug, {
       headers: {
-        authorization: "Bearer " + Cookies.get("_token")
+        authorization: 'Bearer ' + Cookies.get('_token')
       }
     })
       .then(handleErrors)
@@ -41,12 +40,12 @@ export function fetchCollection(slug) {
 export function addCollection(name) {
   return dispatch => {
     dispatch(addCollectionBegin());
-    return fetch("/api/collections", {
-      method: "POST",
+    return fetch('/api/collections', {
+      method: 'POST',
       headers: {
-        authorization: "Bearer " + Cookies.get("_token"),
-        "X-CSRF-Token": Cookies.get("_csrf"),
-        "Content-Type": "application/json"
+        authorization: 'Bearer ' + Cookies.get('_token'),
+        'X-CSRF-Token': Cookies.get('_csrf'),
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({ name })
     })
@@ -60,9 +59,9 @@ export function addCollection(name) {
   };
 }
 
-export const FETCH_COLLECTIONS_BEGIN = "FETCH_COLLECTIONS_BEGIN";
-export const FETCH_COLLECTIONS_SUCCESS = "FETCH_COLLECTIONS_SUCCESS";
-export const FETCH_COLLECTIONS_FAILURE = "FETCH_COLLECTIONS_FAILURE";
+export const FETCH_COLLECTIONS_BEGIN = 'FETCH_COLLECTIONS_BEGIN';
+export const FETCH_COLLECTIONS_SUCCESS = 'FETCH_COLLECTIONS_SUCCESS';
+export const FETCH_COLLECTIONS_FAILURE = 'FETCH_COLLECTIONS_FAILURE';
 
 export const fetchCollectionsBegin = () => ({
   type: FETCH_COLLECTIONS_BEGIN
@@ -78,9 +77,9 @@ export const fetchCollectionsFailure = error => ({
   payload: { error }
 });
 
-export const FETCH_COLLECTION_BEGIN = "FETCH_COLLECTION_BEGIN";
-export const FETCH_COLLECTION_SUCCESS = "FETCH_COLLECTION_SUCCESS";
-export const FETCH_COLLECTION_FAILURE = "FETCH_COLLECTION_FAILURE";
+export const FETCH_COLLECTION_BEGIN = 'FETCH_COLLECTION_BEGIN';
+export const FETCH_COLLECTION_SUCCESS = 'FETCH_COLLECTION_SUCCESS';
+export const FETCH_COLLECTION_FAILURE = 'FETCH_COLLECTION_FAILURE';
 
 export const fetchCollectionBegin = () => ({
   type: FETCH_COLLECTION_BEGIN
@@ -96,9 +95,9 @@ export const fetchCollectionFailure = error => ({
   payload: { error }
 });
 
-export const ADD_COLLECTION_BEGIN = "ADD_COLLECTION_BEGIN";
-export const ADD_COLLECTION_SUCCESS = "ADD_COLLECTION_SUCCESS";
-export const ADD_COLLECTION_FAILURE = "ADD_COLLECTION_FAILURE";
+export const ADD_COLLECTION_BEGIN = 'ADD_COLLECTION_BEGIN';
+export const ADD_COLLECTION_SUCCESS = 'ADD_COLLECTION_SUCCESS';
+export const ADD_COLLECTION_FAILURE = 'ADD_COLLECTION_FAILURE';
 
 export const addCollectionBegin = () => ({
   type: ADD_COLLECTION_BEGIN
