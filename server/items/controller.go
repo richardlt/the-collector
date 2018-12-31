@@ -143,6 +143,80 @@ func HandlePost(c echo.Context) error {
 	return c.JSON(http.StatusOK, item)
 }
 
+// HandlePostFile .
+func HandlePostFile(c echo.Context) error {
+	i := c.Get("item").(*types.Item)
+
+	header, err := c.FormFile("file")
+	if err != nil {
+		return errors.NewData("invalid given file")
+	}
+
+	ct := header.Header.Get("Content-Type")
+	if !types.IsImageContentType(ct) {
+		return errors.NewData("invalid given file")
+	}
+
+	f, err := header.Open()
+	if err != nil {
+		return errorsP.WithStack(err)
+	}
+
+	var data []byte
+	if ct == types.ImageJpeg {
+		data, err = files.FixJpegImageRotation(f)
+	} else {
+		data, err = ioutil.ReadAll(f)
+	}
+	if err != nil {
+		return errorsP.WithStack(err)
+	}
+
+	ext := filepath.Ext(header.Filename)
+	filename := fmt.Sprintf("%s%s",
+		api.Slugify(strings.TrimSuffix(header.Filename, ext)), ext)
+	path := filepath.Clean(fmt.Sprintf("%s/%s/%s/%s",
+		types.ItemResource, i.UUID, uuid.NewV4().String(), filename))
+
+	if err := files.SaveFile(data, path); err != nil {
+		return err
+	}
+
+	oldFile, err := files.Get(context.Background(), files.NewCriteria().
+		ResourceType(types.ItemResource).ResourceID(i.ID))
+	if err != nil {
+		return err
+	}
+	if oldFile != nil {
+		if err := files.DeleteFile(oldFile.Path); err != nil {
+			return err
+		}
+		if err := files.Delete(context.Background(), oldFile); err != nil {
+			return err
+		}
+	}
+
+	newFile := &types.File{
+		ResourceType: types.ItemResource,
+		ResourceID:   i.ID,
+		Name:         filename,
+		Path:         path,
+		Size:         int64(len(data)),
+		ContentType:  ct,
+	}
+	if err := files.Create(context.Background(), newFile); err != nil {
+		return err
+	}
+
+	uri, err := newFile.GenerateURI(config.jwtSecret)
+	if err != nil {
+		return err
+	}
+	i.Picture = uri
+
+	return c.JSON(http.StatusOK, i)
+}
+
 // HandleDelete .
 func HandleDelete(c echo.Context) error {
 	i := c.Get("item").(*types.Item)

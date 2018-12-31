@@ -8,6 +8,9 @@ import {
   ADD_ITEM_BEGIN,
   ADD_ITEM_SUCCESS,
   ADD_ITEM_FAILURE,
+  UPDATE_ITEM_FILE_BEGIN,
+  UPDATE_ITEM_FILE_SUCCESS,
+  UPDATE_ITEM_FILE_FAILURE,
   DELETE_ITEM_BEGIN,
   DELETE_ITEM_SUCCESS,
   DELETE_ITEM_FAILURE
@@ -15,7 +18,6 @@ import {
 
 const initialState = {
   all: [],
-  current: null,
   loading: false,
   error: null
 };
@@ -25,6 +27,7 @@ export default function itemReducer(state = initialState, action) {
     case FETCH_ITEMS_BEGIN:
     case FETCH_ITEM_BEGIN:
     case ADD_ITEM_BEGIN:
+    case UPDATE_ITEM_FILE_BEGIN:
     case DELETE_ITEM_BEGIN:
       return {
         ...state,
@@ -35,6 +38,7 @@ export default function itemReducer(state = initialState, action) {
     case FETCH_ITEMS_FAILURE:
     case FETCH_ITEM_FAILURE:
     case ADD_ITEM_FAILURE:
+    case UPDATE_ITEM_FILE_FAILURE:
     case DELETE_ITEM_FAILURE:
       return {
         ...state,
@@ -50,10 +54,13 @@ export default function itemReducer(state = initialState, action) {
       };
 
     case FETCH_ITEM_SUCCESS:
+    case UPDATE_ITEM_FILE_SUCCESS:
       return {
         ...state,
         loading: false,
-        current: action.payload.item
+        all: state.all
+          .filter(i => i.uuid != action.payload.item.uuid)
+          .concat(action.payload.item)
       };
 
     case ADD_ITEM_SUCCESS:

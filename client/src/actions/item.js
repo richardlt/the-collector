@@ -60,6 +60,32 @@ export function addItem(collection, file) {
   };
 }
 
+export function updateItemFile(collection, item, file) {
+  return dispatch => {
+    dispatch(updateItemFileBegin());
+    let formData = new FormData();
+    formData.append('file', file);
+    return fetch(
+      '/api/collections/' + collection.uuid + '/items/' + item.uuid + '/file',
+      {
+        method: 'POST',
+        headers: {
+          authorization: 'Bearer ' + Cookies.get('_token'),
+          'X-CSRF-Token': Cookies.get('_csrf')
+        },
+        body: formData
+      }
+    )
+      .then(handleErrors)
+      .then(res => res.json())
+      .then(json => {
+        dispatch(updateItemFileSuccess(json));
+        return json;
+      })
+      .catch(error => dispatch(updateItemFileFailure(error)));
+  };
+}
+
 export function deleteItem(collection, uuid) {
   return dispatch => {
     dispatch(deleteItemBegin());
@@ -130,6 +156,24 @@ export const addItemSuccess = item => ({
 
 export const addItemFailure = error => ({
   type: ADD_ITEM_FAILURE,
+  payload: { error }
+});
+
+export const UPDATE_ITEM_FILE_BEGIN = 'UPDATE_ITEM_FILE_BEGIN';
+export const UPDATE_ITEM_FILE_SUCCESS = 'UPDATE_ITEM_FILE_SUCCESS';
+export const UPDATE_ITEM_FILE_FAILURE = 'UPDATE_ITEM_FILE_FAILURE';
+
+export const updateItemFileBegin = () => ({
+  type: UPDATE_ITEM_FILE_BEGIN
+});
+
+export const updateItemFileSuccess = item => ({
+  type: UPDATE_ITEM_FILE_SUCCESS,
+  payload: { item }
+});
+
+export const updateItemFileFailure = error => ({
+  type: UPDATE_ITEM_FILE_FAILURE,
   payload: { error }
 });
 

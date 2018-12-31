@@ -82,6 +82,7 @@ func Start(
 					{ // routes for /api/collections/:collectionSlugOrUUID/items/:itemUUID
 						ig.GET("", items.HandleGet)
 						ig.DELETE("", items.HandleDelete)
+						ig.POST("/file", items.HandlePostFile)
 					}
 				}
 			}
