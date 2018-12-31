@@ -46,7 +46,7 @@ class Item extends React.Component {
     this.setState({
       ...this.state,
       scaleValue: value,
-      scaleRate: 1 + (value / 100 - 0.5)
+      scaleRate: 1 + (value / 100 - 0.5) * 5
     });
   };
 
@@ -60,8 +60,15 @@ class Item extends React.Component {
 
   saveItem = () => {
     if (this.editor) {
-      const canvas = this.editor.getImage();
-      canvas.toBlob(
+      const source = this.editor.getImage();
+      let target = document.createElement('canvas');
+      target.width = source.width;
+      target.height = source.height;
+      let context = target.getContext('2d');
+      context.fillStyle = '#ffffff';
+      context.fillRect(0, 0, source.width, source.height);
+      context.drawImage(source, 0, 0);
+      target.toBlob(
         blob => {
           const filename = this.props.item.picture.substring(
             this.props.item.picture.lastIndexOf('/') + 1
@@ -103,16 +110,12 @@ class Item extends React.Component {
                     rotate={this.state.rotateAngle}
                   />
                   <Slider
-                    classes={{ container: classes.slider }}
                     value={this.state.scaleValue}
-                    aria-labelledby="label"
                     onChange={this.handleScaleChange}
                   />
                   <br />
                   <Slider
-                    classes={{ container: classes.slider }}
                     value={this.state.rotateValue}
-                    aria-labelledby="label"
                     onChange={this.handleRotateChange}
                   />
                 </div>
